@@ -25,12 +25,12 @@ import io.yogh.bl3p.api.v1.request.RequestUriBuilder;
 import io.yogh.bl3p.api.v1.response.exception.Bl3pException;
 import io.yogh.bl3p.api.v1.response.exception.Bl3pException.Reason;
 
-public final class ApiClientRequestUtil {
-  private static final Logger LOG = LoggerFactory.getLogger(ApiClientRequestUtil.class);
+public final class Bl3pClientRequestUtil {
+  private static final Logger LOG = LoggerFactory.getLogger(Bl3pClientRequestUtil.class);
 
   private static final String HOST = "https://api.bl3p.eu/1/";
 
-  private ApiClientRequestUtil() {}
+  private Bl3pClientRequestUtil() {}
 
   public static JsonNode doCall(final String uuid, final String key, final ApiCall call) throws Bl3pException {
     try {
@@ -45,7 +45,7 @@ public final class ApiClientRequestUtil {
     return createCall(uuid, key, call).asJsonAsync();
   }
 
-  public static void doCallAsync(final String uuid, final String key, final ApiCall call, final Callback<JsonNode> complete) {
+  public static void doCallAsync(final String uuid, final String key, final Callback<JsonNode> complete, final ApiCall call) {
     createCall(uuid, key, call).asJsonAsync(complete);
   }
 
@@ -79,7 +79,7 @@ public final class ApiClientRequestUtil {
 
       final StringBuilder commit = new StringBuilder();
       commit.append(uri);
-      commit.append('\u0300');
+      commit.append('\u0000');
       commit.append(post);
 
       final Mac HMAC = Mac.getInstance("HmacSHA512");

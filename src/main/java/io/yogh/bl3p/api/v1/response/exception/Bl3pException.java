@@ -1,8 +1,9 @@
 package io.yogh.bl3p.api.v1.response.exception;
 
 public class Bl3pException extends Exception {
+  private static final long serialVersionUID = 4366828874902810863L;
+
   private final Reason reason;
-  private final String message;
 
   public static enum Reason {
     // Order amount (amount_funds) smaller than the minimum.
@@ -87,25 +88,26 @@ public class Bl3pException extends Exception {
   }
 
   public Bl3pException(final Reason reason, final String message) {
+    super(message);
     this.reason = reason;
-    this.message = message;
   }
 
   public Bl3pException(final Reason reason, final String message, final Exception e) {
-    super(e);
+    super(message, e);
     this.reason = reason;
-    this.message = message;
   }
 
   @Override
   public String getMessage() {
-    return message;
+    return "Reason: " + reason.name() + " | " + super.getMessage();
   }
 
   public Reason getReason() {
     return reason;
   }
 
-  private static final long serialVersionUID = 4366828874902810863L;
-
+  @Override
+  public String toString() {
+    return "Bl3pException [reason: " + reason + ", message: " + getMessage() + "]";
+  }
 }

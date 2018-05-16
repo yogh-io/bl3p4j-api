@@ -3,7 +3,7 @@ package io.yogh.bl3p.api.v1.response.callback;
 import io.yogh.bl3p.api.v1.response.AsyncCallback;
 import io.yogh.bl3p.api.v1.response.domain.AccountBalance;
 import io.yogh.bl3p.api.v1.response.parser.Parser;
-import io.yogh.bl3p.api.v1.response.parser.RetrieveAccountBalanceResponseParser;
+import io.yogh.bl3p.api.v1.response.parser.AccountBalanceParser;
 
 public class RetrieveAccountBalanceCallback extends ResponseParsingCallback<AccountBalance> {
   public RetrieveAccountBalanceCallback(final Parser<AccountBalance> parser,
@@ -12,6 +12,6 @@ public class RetrieveAccountBalanceCallback extends ResponseParsingCallback<Acco
   }
 
   public static RetrieveAccountBalanceCallback create(final AsyncCallback<AccountBalance> callback) {
-    return new RetrieveAccountBalanceCallback(new RetrieveAccountBalanceResponseParser(), callback);
+    return new RetrieveAccountBalanceCallback(new AccountBalanceParser(), callback);
   }
 }
