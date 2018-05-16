@@ -1,17 +1,16 @@
 package io.yogh.bl3p.api.v1.response.callback;
 
 import io.yogh.bl3p.api.v1.response.AsyncCallback;
-import io.yogh.bl3p.api.v1.response.domain.RetrieveLastDepositAddressResponse;
 import io.yogh.bl3p.api.v1.response.parser.Parser;
-import io.yogh.bl3p.api.v1.response.parser.RetrieveLastDepositAddressResponseParser;
+import io.yogh.bl3p.api.v1.response.parser.LastDepositAddressParser;
 
-public class RetrieveLastDepositAddressCallback extends ResponseParsingCallback<RetrieveLastDepositAddressResponse> {
-  public RetrieveLastDepositAddressCallback(final Parser<RetrieveLastDepositAddressResponse> parser,
-      final AsyncCallback<RetrieveLastDepositAddressResponse> callback) {
+public class RetrieveLastDepositAddressCallback extends ResponseParsingCallback<String> {
+  public RetrieveLastDepositAddressCallback(final Parser<String> parser,
+      final AsyncCallback<String> callback) {
     super(parser, callback);
   }
 
-  public static RetrieveLastDepositAddressCallback create(final AsyncCallback<RetrieveLastDepositAddressResponse> callback) {
-    return new RetrieveLastDepositAddressCallback(new RetrieveLastDepositAddressResponseParser(), callback);
+  public static RetrieveLastDepositAddressCallback create(final AsyncCallback<String> callback) {
+    return new RetrieveLastDepositAddressCallback(new LastDepositAddressParser(), callback);
   }
 }

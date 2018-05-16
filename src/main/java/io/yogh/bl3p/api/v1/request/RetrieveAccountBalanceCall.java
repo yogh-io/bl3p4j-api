@@ -1,6 +1,5 @@
 package io.yogh.bl3p.api.v1.request;
 
-import io.yogh.bl3p.api.v1.request.ApiCall.Builder;
 import io.yogh.bl3p.api.v1.request.domain.ApiCallType;
 import io.yogh.bl3p.api.v1.request.domain.Market;
 import io.yogh.bl3p.api.v1.request.domain.Namespace;

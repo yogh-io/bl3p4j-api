@@ -15,7 +15,7 @@ import io.yogh.bl3p.api.v1.request.RetrieveLastDepositAddressCall;
 import io.yogh.bl3p.api.v1.request.RetrieveOrderBookCall;
 import io.yogh.bl3p.api.v1.request.RetrieveOrderCall;
 import io.yogh.bl3p.api.v1.request.RetrieveOrderHistoryCall;
-import io.yogh.bl3p.api.v1.request.RetrieveTransactionHistoryCall;
+import io.yogh.bl3p.api.v1.request.TransactionHistoryCall;
 import io.yogh.bl3p.api.v1.request.domain.Currency;
 import io.yogh.bl3p.api.v1.request.domain.FeeCurrency;
 import io.yogh.bl3p.api.v1.request.domain.Market;
@@ -112,7 +112,7 @@ public class CallTestSuite {
 
   @Test
   public void testRetrieveTransactionHistoryCall() {
-    final RetrieveTransactionHistoryCall call = RetrieveTransactionHistoryCall.builder()
+    final TransactionHistoryCall call = TransactionHistoryCall.builder()
         .build();
   }
 }

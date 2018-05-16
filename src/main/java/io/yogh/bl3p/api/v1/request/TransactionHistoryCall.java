@@ -1,6 +1,5 @@
 package io.yogh.bl3p.api.v1.request;
 
-import io.yogh.bl3p.api.v1.request.PagedApiCall.Builder;
 import io.yogh.bl3p.api.v1.request.domain.ApiCallType;
 import io.yogh.bl3p.api.v1.request.domain.ApiSubCallType;
 import io.yogh.bl3p.api.v1.request.domain.Currency;
@@ -8,14 +7,14 @@ import io.yogh.bl3p.api.v1.request.domain.Market;
 import io.yogh.bl3p.api.v1.request.domain.Namespace;
 import io.yogh.bl3p.api.v1.request.domain.TransactionType;
 
-public final class RetrieveTransactionHistoryCall extends PagedApiCall {
-  private RetrieveTransactionHistoryCall(final Builder<?, ?> builder) {
+public final class TransactionHistoryCall extends PagedApiCall {
+  private TransactionHistoryCall(final Builder<?, ?> builder) {
     super(builder);
     addRequestParameter(ApiCallNames.CURRENCY, builder.currency);
     addRequestParameter(ApiCallNames.TYPE, builder.type);
   }
 
-  public static Builder<RetrieveTransactionHistoryCall, RetrieveTransactionHistoryCallBuilder> builder() {
+  public static Builder<TransactionHistoryCall, RetrieveTransactionHistoryCallBuilder> builder() {
     return new RetrieveTransactionHistoryCallBuilder()
         .market(Market.GENMKT)
         .namespace(Namespace.MONEY)
@@ -50,10 +49,10 @@ public final class RetrieveTransactionHistoryCall extends PagedApiCall {
     }
   }
 
-  public static class RetrieveTransactionHistoryCallBuilder extends Builder<RetrieveTransactionHistoryCall, RetrieveTransactionHistoryCallBuilder> {
+  public static class RetrieveTransactionHistoryCallBuilder extends Builder<TransactionHistoryCall, RetrieveTransactionHistoryCallBuilder> {
     @Override
-    public RetrieveTransactionHistoryCall build() {
-      return new RetrieveTransactionHistoryCall(this);
+    public TransactionHistoryCall build() {
+      return new TransactionHistoryCall(this);
     }
 
     @Override
