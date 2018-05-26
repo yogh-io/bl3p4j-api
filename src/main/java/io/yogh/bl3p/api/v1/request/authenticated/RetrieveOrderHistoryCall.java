@@ -1,4 +1,4 @@
-package io.yogh.bl3p.api.v1.request;
+package io.yogh.bl3p.api.v1.request.authenticated;
 
 import io.yogh.bl3p.api.v1.request.domain.ApiCallType;
 import io.yogh.bl3p.api.v1.request.domain.ApiSubCallType;

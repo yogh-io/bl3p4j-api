@@ -1,5 +1,7 @@
-package io.yogh.bl3p.api.v1.request;
+package io.yogh.bl3p.api.v1.request.authenticated;
 
+import io.yogh.bl3p.api.v1.request.ApiCall;
+import io.yogh.bl3p.api.v1.request.ApiCallNames;
 import io.yogh.bl3p.api.v1.request.domain.ApiCallType;
 import io.yogh.bl3p.api.v1.request.domain.Currency;
 import io.yogh.bl3p.api.v1.request.domain.Market;

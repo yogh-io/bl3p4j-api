@@ -4,21 +4,22 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import io.yogh.bl3p.api.v1.request.CancelOrderCall;
-import io.yogh.bl3p.api.v1.request.CreateDepositAddressCall;
-import io.yogh.bl3p.api.v1.request.CreateOrderCall;
-import io.yogh.bl3p.api.v1.request.RequestUriBuilder;
-import io.yogh.bl3p.api.v1.request.RetrieveAccountBalanceCall;
-import io.yogh.bl3p.api.v1.request.RetrieveActiveOrdersCall;
-import io.yogh.bl3p.api.v1.request.RetrieveAllTradesCall;
-import io.yogh.bl3p.api.v1.request.RetrieveLastDepositAddressCall;
-import io.yogh.bl3p.api.v1.request.RetrieveOrderBookCall;
-import io.yogh.bl3p.api.v1.request.RetrieveOrderCall;
-import io.yogh.bl3p.api.v1.request.RetrieveOrderHistoryCall;
-import io.yogh.bl3p.api.v1.request.TransactionHistoryCall;
+import io.yogh.bl3p.api.v1.request.authenticated.CancelOrderCall;
+import io.yogh.bl3p.api.v1.request.authenticated.CreateDepositAddressCall;
+import io.yogh.bl3p.api.v1.request.authenticated.CreateOrderCall;
+import io.yogh.bl3p.api.v1.request.authenticated.RequestUriBuilder;
+import io.yogh.bl3p.api.v1.request.authenticated.RetrieveAccountBalanceCall;
+import io.yogh.bl3p.api.v1.request.authenticated.RetrieveActiveOrdersCall;
+import io.yogh.bl3p.api.v1.request.authenticated.RetrieveAllTradesCall;
+import io.yogh.bl3p.api.v1.request.authenticated.RetrieveLastDepositAddressCall;
+import io.yogh.bl3p.api.v1.request.authenticated.RetrieveOrderBookCall;
+import io.yogh.bl3p.api.v1.request.authenticated.RetrieveOrderCall;
+import io.yogh.bl3p.api.v1.request.authenticated.RetrieveOrderHistoryCall;
+import io.yogh.bl3p.api.v1.request.authenticated.TransactionHistoryCall;
 import io.yogh.bl3p.api.v1.request.domain.Currency;
 import io.yogh.bl3p.api.v1.request.domain.FeeCurrency;
 import io.yogh.bl3p.api.v1.request.domain.Market;
+import io.yogh.bl3p.api.v1.request.publicc.TickerCall;
 
 public class CallTestSuite {
   @Test
@@ -113,6 +114,12 @@ public class CallTestSuite {
   @Test
   public void testRetrieveTransactionHistoryCall() {
     final TransactionHistoryCall call = TransactionHistoryCall.builder()
+        .build();
+  }
+
+  public void testTickerCall() {
+    final TickerCall build = TickerCall.builder()
+        .market(Market.BTCEUR)
         .build();
   }
 }

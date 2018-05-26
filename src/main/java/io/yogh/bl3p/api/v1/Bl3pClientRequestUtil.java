@@ -5,7 +5,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.concurrent.Future;
-import java.util.function.Consumer;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -18,10 +17,11 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.body.RequestBodyEntity;
 
 import io.yogh.bl3p.api.v1.request.ApiCall;
-import io.yogh.bl3p.api.v1.request.RequestUriBuilder;
+import io.yogh.bl3p.api.v1.request.authenticated.RequestUriBuilder;
 import io.yogh.bl3p.api.v1.response.exception.Bl3pException;
 import io.yogh.bl3p.api.v1.response.exception.Bl3pException.Reason;
 
@@ -32,9 +32,9 @@ public final class Bl3pClientRequestUtil {
 
   private Bl3pClientRequestUtil() {}
 
-  public static JsonNode doCall(final String uuid, final String key, final ApiCall call) throws Bl3pException {
+  public static JsonNode doAuthenticatedCall(final String uuid, final String key, final ApiCall call) throws Bl3pException {
     try {
-      return createCall(uuid, key, call).asJson().getBody();
+      return createAuthenticatedCall(uuid, key, call).asJson().getBody();
     } catch (final UnirestException e) {
       LOG.error("Failure while executing request.", call, e);
       throw new Bl3pException(Reason.UNSPECIFIED_CLIENT_ERROR, e.getMessage(), e);
@@ -42,37 +42,27 @@ public final class Bl3pClientRequestUtil {
   }
 
   public static Future<HttpResponse<JsonNode>> doCallAsync(final String uuid, final String key, final ApiCall call) {
-    return createCall(uuid, key, call).asJsonAsync();
+    return createAuthenticatedCall(uuid, key, call).asJsonAsync();
   }
 
-  public static void doCallAsync(final String uuid, final String key, final Callback<JsonNode> complete, final ApiCall call) {
-    createCall(uuid, key, call).asJsonAsync(complete);
+  public static void doAuthenticatedCallAsync(final String uuid, final String key, final Callback<JsonNode> complete, final ApiCall call) {
+    createAuthenticatedCall(uuid, key, call).asJsonAsync(complete);
   }
 
-  /**
-   * This method does not report back any errors and as such should not be used in
-   * the common case.
-   */
-  public static void doCallAsyncNaive(final String uuid, final String key, final ApiCall call, final Consumer<JsonNode> complete) {
-    createCall(uuid, key, call).asJsonAsync(new Callback<JsonNode>() {
-      @Override
-      public void completed(final HttpResponse<JsonNode> response) {
-        complete.accept(response.getBody());
-      }
-
-      @Override
-      public void failed(final UnirestException e) {
-        LOG.error("Failure while executing request.", call, e);
-      }
-
-      @Override
-      public void cancelled() {
-        LOG.warn("Request cancelled.", call);
-      }
-    });
+  public static JsonNode doPublicCall(final ApiCall call) throws Bl3pException {
+    try {
+      return createPublicCall(call).asJson().getBody();
+    } catch (final UnirestException e) {
+      LOG.error("Failure while executing request.", call, e);
+      throw new Bl3pException(Reason.UNSPECIFIED_CLIENT_ERROR, e.getMessage(), e);
+    }
   }
 
-  private static RequestBodyEntity createCall(final String uuid, final String key, final ApiCall call) {
+  public static void doPublicCallAsync(final Callback<JsonNode> complete, final ApiCall call) {
+    createPublicCall(call).asJsonAsync(complete);
+  }
+
+  private static RequestBodyEntity createAuthenticatedCall(final String uuid, final String key, final ApiCall call) {
     try {
       final String uri = RequestUriBuilder.getUri(call);
       final String post = RequestUriBuilder.getPostData(call);
@@ -94,5 +84,18 @@ public final class Bl3pClientRequestUtil {
     } catch (final NoSuchAlgorithmException | InvalidKeyException e) {
       throw new RuntimeException("Unrecoverable error relating to signing requests.", e);
     }
+  }
+
+  private static GetRequest createPublicCall(final ApiCall call) {
+    final StringBuilder builder = new StringBuilder(HOST);
+    builder.append(RequestUriBuilder.getUri(call));
+
+    final String post = RequestUriBuilder.getPostData(call);
+    if (post != null && !post.isEmpty()) {
+      builder.append("?");
+      builder.append(post);
+    }
+
+    return Unirest.get(builder.toString());
   }
 }

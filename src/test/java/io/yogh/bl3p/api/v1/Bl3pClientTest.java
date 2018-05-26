@@ -1,19 +1,16 @@
 package io.yogh.bl3p.api.v1;
 
-import io.yogh.bl3p.api.v1.request.domain.Currency;
-import io.yogh.bl3p.api.v1.response.domain.AccountBalance;
+import io.yogh.bl3p.api.v1.request.domain.Market;
 import io.yogh.bl3p.api.v1.response.exception.Bl3pException;
 
 public class Bl3pClientTest {
   public static void main(final String[] args) throws Bl3pException {
-    final Bl3pClient client = Bl3pClient.create().uuid(args[0]).key(args[1]);
+    final Bl3pClient client = Bl3pClient.create();
 
-    final AccountBalance balance = client.getAccountBalance();
+    client.getTickerAsync(Market.BTCEUR, System.out::println);
 
-    final int fiat = balance.getWallets().get(Currency.EUR.name()).getAvailable().getValueInt();
+    client.getOrderBookAsync(Market.BTCEUR, System.out::println);
 
-    final SimpleTradeWrapper trader = SimpleTradeWrapper.wrap(client);
-
-    trader.buyEuroAmount(fiat);
+    client.getLast1000TradesAsync(Market.BTCEUR, System.out::println);
   }
 }
