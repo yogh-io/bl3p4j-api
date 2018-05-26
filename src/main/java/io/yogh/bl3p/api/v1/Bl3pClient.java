@@ -1,6 +1,9 @@
 package io.yogh.bl3p.api.v1;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
 
 import io.yogh.bl3p.api.v1.request.ApiCall;
 import io.yogh.bl3p.api.v1.request.authenticated.CancelOrderCall;
@@ -42,6 +45,7 @@ import io.yogh.bl3p.api.v1.response.domain.OrderBook;
 import io.yogh.bl3p.api.v1.response.domain.OrderHistory;
 import io.yogh.bl3p.api.v1.response.domain.OrderInfo;
 import io.yogh.bl3p.api.v1.response.domain.TickerInfo;
+import io.yogh.bl3p.api.v1.response.domain.TradeFeedInfo;
 import io.yogh.bl3p.api.v1.response.domain.TradeInfo;
 import io.yogh.bl3p.api.v1.response.domain.TransactionHistory;
 import io.yogh.bl3p.api.v1.response.exception.Bl3pException;
@@ -59,6 +63,8 @@ import io.yogh.bl3p.api.v1.response.parser.Parser;
 import io.yogh.bl3p.api.v1.response.parser.RetrieveAllTradesResponseParser;
 import io.yogh.bl3p.api.v1.response.parser.TickerResponseParser;
 import io.yogh.bl3p.api.v1.response.parser.TransactionHistoryParser;
+import io.yogh.bl3p.api.v1.response.websocket.OrderBookResponseCallback;
+import io.yogh.bl3p.api.v1.response.websocket.TradeFeedResponseCallback;
 
 /**
  * Thin client providing all methods encompassing the authenticated API.
@@ -70,6 +76,12 @@ public final class Bl3pClient {
   private Market defaultMarket;
   private Currency defaultCurrency;
   private FeeCurrency defaultFeeCurrency;
+
+  private final Set<Consumer<OrderBook>> orderbookSubscribers = new HashSet<>();
+  private WebSocketClient orderbookClient;
+
+  private final Set<Consumer<TradeFeedInfo>> tradesSubscribers = new HashSet<>();
+  private WebSocketClient tradesClient;
 
   public static Bl3pClient create() {
     return new Bl3pClient()
@@ -741,6 +753,51 @@ public final class Bl3pClient {
     Bl3pClientRequestUtil.doPublicCallAsync(RetrieveAllTradesCallback.create(callback), Last1000TradesCall.builder()
         .market(market)
         .build());
+  }
+
+  public void subscribeOrderbookFeed(final Consumer<OrderBook> consumer) {
+    final boolean added = orderbookSubscribers.add(consumer);
+    if (added && orderbookSubscribers.size() == 1) {
+      startOrderbookFeed();
+    }
+  }
+
+  public void unsubscribeOrderbookFeed(final Consumer<OrderBook> consumer) {
+    final boolean removed = orderbookSubscribers.remove(consumer);
+    if (removed && orderbookSubscribers.isEmpty()) {
+      stopOrderbookFeed();
+    }
+  }
+
+  public void startOrderbookFeed() {
+    orderbookClient = new WebSocketClient(defaultMarket, "orderbook", OrderBookResponseCallback.create(orderbookSubscribers));
+  }
+
+  public void stopOrderbookFeed() {
+    orderbookClient.terminate();
+  }
+
+  public void subscribeTradesFeed(final Consumer<TradeFeedInfo> consumer) {
+    final boolean added = tradesSubscribers.add(consumer);
+    if (added && tradesSubscribers.size() == 1) {
+      startTradesFeed();
+    }
+  }
+
+  public void unsubscribeTradesFeed(final Consumer<TradeFeedInfo> consumer) {
+    final boolean removed = tradesSubscribers.remove(consumer);
+    if (removed && tradesSubscribers.isEmpty()) {
+      stopTradesFeed();
+    }
+  }
+
+  public void startTradesFeed() {
+    System.out.println("Starting...");
+    tradesClient = new WebSocketClient(defaultMarket, "trades", TradeFeedResponseCallback.create(tradesSubscribers));
+  }
+
+  public void stopTradesFeed() {
+    tradesClient.terminate();
   }
 
   private <T> T doPublicCall(final Parser<T> parser, final ApiCall call) throws Bl3pException {

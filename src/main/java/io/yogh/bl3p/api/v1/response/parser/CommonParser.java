@@ -67,7 +67,11 @@ public final class CommonParser {
     final SimpleOrder order = new SimpleOrder();
     order.setAmount(orderJson.getInt("amount_int"));
     order.setPrice(orderJson.getInt("price_int"));
-    order.setCount(orderJson.getInt("count"));
+
+    if (orderJson.has("count")) {
+      order.setCount(orderJson.getInt("count"));
+    }
+
     return order;
   }
 }
