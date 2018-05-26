@@ -1,6 +1,6 @@
 # Java API Wrapper for the BL3P Exchange
 
-Simple wrapper to approach the BL3P API from Java.
+Simple wrapper to approach the full BL3P API from Java.
 
 Example usage:
 
@@ -22,3 +22,9 @@ trader.buyEuroAmount(fiat);
 
 // Hodl
 ````
+
+Supports the authenticated API, the public API, and the websocket feeds.
+
+Provides synchronous and asynchronous handles for each.
+
+Allows custom calls and custom client creation using Builder pattern.
