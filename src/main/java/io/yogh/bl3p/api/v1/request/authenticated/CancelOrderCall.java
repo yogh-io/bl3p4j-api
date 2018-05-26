@@ -1,20 +1,22 @@
-package io.yogh.bl3p.api.v1.request;
+package io.yogh.bl3p.api.v1.request.authenticated;
 
+import io.yogh.bl3p.api.v1.request.ApiCall;
+import io.yogh.bl3p.api.v1.request.ApiCallNames;
 import io.yogh.bl3p.api.v1.request.domain.ApiCallType;
 import io.yogh.bl3p.api.v1.request.domain.ApiSubCallType;
 import io.yogh.bl3p.api.v1.request.domain.Namespace;
 
-public final class RetrieveOrderCall extends ApiCall {
-  private RetrieveOrderCall(final Builder<?, ?> builder) {
+public final class CancelOrderCall extends ApiCall {
+  private CancelOrderCall(final Builder<?, ?> builder) {
     super(builder);
     addRequestParameter(ApiCallNames.ORDER_ID, builder.orderId);
   }
 
-  public static Builder<RetrieveOrderCall, RetrieveOrderCallBuilder> builder() {
-    return new RetrieveOrderCallBuilder()
+  public static Builder<CancelOrderCall, CancelOrderCallBuilder> builder() {
+    return new CancelOrderCallBuilder()
         .namespace(Namespace.MONEY)
         .call(ApiCallType.ORDER)
-        .subcall(ApiSubCallType.RESULT);
+        .subcall(ApiSubCallType.CANCEL);
   }
 
   public abstract static class Builder<T extends ApiCall, B extends Builder<T, B>> extends ApiCall.Builder<T, B> {
@@ -28,14 +30,14 @@ public final class RetrieveOrderCall extends ApiCall {
     }
   }
 
-  public static class RetrieveOrderCallBuilder extends Builder<RetrieveOrderCall, RetrieveOrderCallBuilder> {
+  public static class CancelOrderCallBuilder extends Builder<CancelOrderCall, CancelOrderCallBuilder> {
     @Override
-    public RetrieveOrderCall build() {
-      return new RetrieveOrderCall(this);
+    public CancelOrderCall build() {
+      return new CancelOrderCall(this);
     }
 
     @Override
-    public RetrieveOrderCallBuilder self() {
+    public CancelOrderCallBuilder self() {
       return this;
     }
   }

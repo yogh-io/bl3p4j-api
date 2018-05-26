@@ -1,6 +1,8 @@
-package io.yogh.bl3p.api.v1.request;
+package io.yogh.bl3p.api.v1.request.authenticated;
 
 import java.util.Map.Entry;
+
+import io.yogh.bl3p.api.v1.request.ApiCall;
 
 public class RequestUriBuilder {
   private static final String QUERYSTRING_EQUATER = "=";
@@ -25,8 +27,10 @@ public class RequestUriBuilder {
   private String createUri() {
     final StringBuilder bldr = new StringBuilder();
     bldr.append(call.getMarket());
-    bldr.append(SLASH);
-    bldr.append(call.getNamespace());
+    if (call.getNamespace() != null) {
+      bldr.append(SLASH);
+      bldr.append(call.getNamespace());
+    }
     bldr.append(SLASH);
     bldr.append(call.getCall());
 

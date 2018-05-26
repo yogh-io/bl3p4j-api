@@ -1,21 +1,23 @@
-package io.yogh.bl3p.api.v1.request;
+package io.yogh.bl3p.api.v1.request.authenticated;
 
+import io.yogh.bl3p.api.v1.request.ApiCall;
+import io.yogh.bl3p.api.v1.request.ApiCallNames;
 import io.yogh.bl3p.api.v1.request.domain.ApiCallType;
 import io.yogh.bl3p.api.v1.request.domain.Currency;
 import io.yogh.bl3p.api.v1.request.domain.Market;
 import io.yogh.bl3p.api.v1.request.domain.Namespace;
 
-public final class RetrieveLastDepositAddressCall extends ApiCall {
-  private RetrieveLastDepositAddressCall(final Builder<?, ?> builder) {
+public final class CreateDepositAddressCall extends ApiCall {
+  private CreateDepositAddressCall(final Builder<CreateDepositAddressCall, CreateDepositAddressCallBuilder> builder) {
     super(builder);
     addRequestParameter(ApiCallNames.CURRENCY, builder.currency);
   }
 
-  public static Builder<RetrieveLastDepositAddressCall, RetrieveLastDepositAddressCallBuilder> builder() {
-    return new RetrieveLastDepositAddressCallBuilder()
+  public static Builder<CreateDepositAddressCall, CreateDepositAddressCallBuilder> builder() {
+    return new CreateDepositAddressCallBuilder()
         .market(Market.GENMKT)
         .namespace(Namespace.MONEY)
-        .call(ApiCallType.DEPOSIT_ADDRESS);
+        .call(ApiCallType.NEW_DEPOSIT_ADDRESS);
   }
 
   public abstract static class Builder<T extends ApiCall, B extends Builder<T, B>> extends ApiCall.Builder<T, B> {
@@ -34,14 +36,14 @@ public final class RetrieveLastDepositAddressCall extends ApiCall {
     }
   }
 
-  public static class RetrieveLastDepositAddressCallBuilder extends Builder<RetrieveLastDepositAddressCall, RetrieveLastDepositAddressCallBuilder> {
+  public static class CreateDepositAddressCallBuilder extends Builder<CreateDepositAddressCall, CreateDepositAddressCallBuilder> {
     @Override
-    public RetrieveLastDepositAddressCall build() {
-      return new RetrieveLastDepositAddressCall(this);
+    public CreateDepositAddressCall build() {
+      return new CreateDepositAddressCall(this);
     }
 
     @Override
-    public RetrieveLastDepositAddressCallBuilder self() {
+    public CreateDepositAddressCallBuilder self() {
       return this;
     }
   }

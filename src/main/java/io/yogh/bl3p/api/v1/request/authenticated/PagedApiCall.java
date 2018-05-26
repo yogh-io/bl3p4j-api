@@ -1,4 +1,7 @@
-package io.yogh.bl3p.api.v1.request;
+package io.yogh.bl3p.api.v1.request.authenticated;
+
+import io.yogh.bl3p.api.v1.request.ApiCall;
+import io.yogh.bl3p.api.v1.request.ApiCallNames;
 
 public class PagedApiCall extends ApiCall {
   protected PagedApiCall(final Builder<?, ?> builder) {

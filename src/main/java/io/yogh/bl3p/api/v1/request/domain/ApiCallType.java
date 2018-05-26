@@ -1,6 +1,8 @@
 package io.yogh.bl3p.api.v1.request.domain;
 
 public enum ApiCallType {
+  /** AUTHENTICATED CALLS **/
+
   ORDER("order"),
 
   DEPTH("depth"),
@@ -15,7 +17,15 @@ public enum ApiCallType {
 
   ORDERS("orders"),
 
-  TRADES("trades");
+  TRADES("trades"),
+
+  /** PUBLIC CALLS **/
+
+  TICKER("ticker"),
+
+  ORDERBOOK("orderbook"),
+
+  TRADES_LAST_1000("trades");
 
   private final String name;
 
