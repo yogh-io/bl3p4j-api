@@ -1,23 +1,23 @@
 package io.yogh.bl3p.api.v1.response.domain;
 
 public class SimpleOrder {
-  private int amount;
-  private int price;
+  private long amount;
+  private long price;
   private int count;
 
-  public int getAmount() {
+  public long getAmount() {
     return amount;
   }
 
-  public void setAmount(final int amount) {
+  public void setAmount(final long amount) {
     this.amount = amount;
   }
 
-  public int getPrice() {
+  public long getPrice() {
     return price;
   }
 
-  public void setPrice(final int price) {
+  public void setPrice(final long price) {
     this.price = price;
   }
 

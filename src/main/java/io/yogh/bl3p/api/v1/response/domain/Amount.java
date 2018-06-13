@@ -4,7 +4,7 @@ public class Amount {
   /**
    * The amount in 1e5 (for fiat) or 1e8 (for virtual currency).
    */
-  private int valueInt;
+  private long valueInt;
 
   /**
    * The amount in 1e5 (for fiat) or 1e8 (for virtual currency), with decimal
@@ -25,11 +25,11 @@ public class Amount {
 
   private String currency;
 
-  public int getValueInt() {
+  public long getValueInt() {
     return valueInt;
   }
 
-  public void setValueInt(final int valueInt) {
+  public void setValueInt(final long valueInt) {
     this.valueInt = valueInt;
   }
 

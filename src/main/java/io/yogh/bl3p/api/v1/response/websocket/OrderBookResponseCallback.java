@@ -14,4 +14,9 @@ public class OrderBookResponseCallback extends FeedForwarder<OrderBook> implemen
   public static OrderBookResponseCallback create(final Set<Consumer<OrderBook>> subscribers) {
     return new OrderBookResponseCallback(subscribers, OrderBookResponseParser.create());
   }
+
+  @Override
+  public String toString() {
+    return "OrderBookResponseCallback []";
+  }
 }

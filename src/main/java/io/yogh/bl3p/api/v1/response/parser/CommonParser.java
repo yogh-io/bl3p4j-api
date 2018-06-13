@@ -13,7 +13,7 @@ public final class CommonParser {
   public static Amount parseAmount(final JSONObject obj) {
     final Amount amount = new Amount();
 
-    amount.setValueInt(Integer.parseInt(obj.getString("value_int")));
+    amount.setValueInt(Long.parseLong(obj.getString("value_int")));
     amount.setDisplayShort(obj.getString("display_short"));
     amount.setDisplay(obj.getString("display"));
     amount.setCurrency(obj.getString("currency"));
@@ -65,8 +65,8 @@ public final class CommonParser {
 
   public static SimpleOrder parseSimpleOrder(final JSONObject orderJson) {
     final SimpleOrder order = new SimpleOrder();
-    order.setAmount(orderJson.getInt("amount_int"));
-    order.setPrice(orderJson.getInt("price_int"));
+    order.setAmount(orderJson.getLong("amount_int"));
+    order.setPrice(orderJson.getLong("price_int"));
 
     if (orderJson.has("count")) {
       order.setCount(orderJson.getInt("count"));

@@ -14,4 +14,9 @@ public class TradeFeedResponseCallback extends FeedForwarder<TradeFeedInfo> impl
   public static TradeFeedResponseCallback create(final Set<Consumer<TradeFeedInfo>> subscribers) {
     return new TradeFeedResponseCallback(subscribers, TradeFeedResponseParser.create());
   }
+
+  @Override
+  public String toString() {
+    return "TradeFeedResponseCallback";
+  }
 }
