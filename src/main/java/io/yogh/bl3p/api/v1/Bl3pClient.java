@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.yogh.bl3p.api.v1.request.ApiCall;
 import io.yogh.bl3p.api.v1.request.authenticated.CancelOrderCall;
 import io.yogh.bl3p.api.v1.request.authenticated.CreateDepositAddressCall;
@@ -70,6 +73,8 @@ import io.yogh.bl3p.api.v1.response.websocket.TradeFeedResponseCallback;
  * Thin client providing all methods encompassing the authenticated API.
  */
 public final class Bl3pClient {
+  private static final Logger LOG = LoggerFactory.getLogger(Bl3pClient.class);
+
   private String uuid;
   private String key;
 
@@ -764,17 +769,23 @@ public final class Bl3pClient {
 
   public void unsubscribeOrderbookFeed(final Consumer<OrderBook> consumer) {
     final boolean removed = orderbookSubscribers.remove(consumer);
+
     if (removed && orderbookSubscribers.isEmpty()) {
       stopOrderbookFeed();
     }
   }
 
   public void startOrderbookFeed() {
+    LOG.info("Starting order book feed.");
     orderbookClient = new WebSocketClient(defaultMarket, "orderbook", OrderBookResponseCallback.create(orderbookSubscribers));
+    orderbookClient.start();
   }
 
   public void stopOrderbookFeed() {
-    orderbookClient.terminate();
+    if (orderbookClient != null) {
+      LOG.info("Terminating order book feed.");
+      orderbookClient.terminate();
+    }
   }
 
   public void subscribeTradesFeed(final Consumer<TradeFeedInfo> consumer) {
@@ -792,12 +803,14 @@ public final class Bl3pClient {
   }
 
   public void startTradesFeed() {
-    System.out.println("Starting...");
     tradesClient = new WebSocketClient(defaultMarket, "trades", TradeFeedResponseCallback.create(tradesSubscribers));
+    tradesClient.start();
   }
 
   public void stopTradesFeed() {
-    tradesClient.terminate();
+    if (tradesClient != null) {
+      tradesClient.terminate();
+    }
   }
 
   private <T> T doPublicCall(final Parser<T> parser, final ApiCall call) throws Bl3pException {

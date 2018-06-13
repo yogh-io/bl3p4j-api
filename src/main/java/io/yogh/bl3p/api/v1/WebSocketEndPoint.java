@@ -3,8 +3,10 @@ package io.yogh.bl3p.api.v1;
 import java.util.function.Consumer;
 
 import javax.websocket.ClientEndpoint;
-import javax.websocket.EndpointConfig;
+import javax.websocket.CloseReason;
+import javax.websocket.CloseReason.CloseCodes;
 import javax.websocket.OnClose;
+import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 
@@ -17,15 +19,18 @@ public class WebSocketEndPoint {
 
   private final Consumer<String> consumer;
 
-  public WebSocketEndPoint(final Consumer<String> consumer) {
+  private final WebSocketClient client;
+
+  public WebSocketEndPoint(final WebSocketClient client, final Consumer<String> consumer) {
+    this.client = client;
     this.consumer = consumer;
 
     LOG.debug("Created WebSocketEndPoint: {}", this);
   }
 
   @OnOpen
-  public void onOpen(final EndpointConfig conf) {
-    LOG.debug("Opened WebSocketEndPoint: {}", conf);
+  public void onOpen() {
+    LOG.debug("Opened WebSocketEndPoint");
   }
 
   @OnMessage
@@ -34,7 +39,22 @@ public class WebSocketEndPoint {
   }
 
   @OnClose
-  public void onClose(final EndpointConfig conf) {
-    LOG.debug("Closed WebSocketEndPoint: {}", conf);
+  public void onClose(final CloseReason closeReason) {
+    if (closeReason.getCloseCode() == CloseCodes.NORMAL_CLOSURE) {
+      return;
+    }
+
+    LOG.error("Closed WebSocketEndPoint abnormally: {}", closeReason);
+    client.reconnect();
+  }
+
+  @OnError
+  public void onError(final Throwable t) {
+    LOG.warn("Error during websocket session", t);
+  }
+
+  @Override
+  public String toString() {
+    return "WebSocketEndPoint [consumer=" + consumer + "]";
   }
 }

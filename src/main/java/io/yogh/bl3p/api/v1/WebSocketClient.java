@@ -20,17 +20,29 @@ public class WebSocketClient implements MessageHandler {
 
   private static Object waitLock = new Object();
 
+  private final Market market;
+  private final String channel;
+  private final Consumer<String> parser;
+
   public WebSocketClient(final Market market, final String channel, final Consumer<String> parser) {
-    final WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+    this.market = market;
+    this.channel = channel;
+    this.parser = parser;
+  }
 
-    final String url = HOST + market.name() + "/" + channel;
+  public void start() {
+    new Thread(() -> {
+      final WebSocketContainer container = ContainerProvider.getWebSocketContainer();
 
-    try (final Session session = container.connectToServer(new WebSocketEndPoint(parser), URI.create(url))) {
-      waitForTerminate();
-    } catch (final Exception e) {
-      LOG.error("Exception during websocket session.", e);
-      // Squelch error.
-    }
+      final String url = HOST + market.name() + "/" + channel;
+
+      try (final Session session = container.connectToServer(new WebSocketEndPoint(this, parser), URI.create(url))) {
+        waitForTerminate();
+      } catch (final Exception e) {
+        LOG.error("Exception during websocket session.", e);
+        // Squelch error.
+      }
+    }).start();
   }
 
   private static void waitForTerminate() {
@@ -42,6 +54,13 @@ public class WebSocketClient implements MessageHandler {
   }
 
   public void terminate() {
-    waitLock.notifyAll();
+    synchronized (waitLock) {
+      waitLock.notify();
+    }
+  }
+
+  public void reconnect() {
+    terminate();
+    start();
   }
 }
