@@ -1,92 +1,51 @@
 package io.yogh.bl3p.api.v1.response.domain;
 
-public class TickerInfo {
-  private String currency;
-  private double last;
-  private double bid;
-  private double ask;
-  private double high;
-  private double low;
-  private long timestamp;
+import com.google.auto.value.AutoValue;
 
-  private double volume1d;
-  private double volume30d;
-
-  public String getCurrency() {
-    return currency;
+@AutoValue
+public abstract class TickerInfo {
+  public static Builder builder() {
+    return new AutoValue_TickerInfo.Builder();
   }
 
-  public void setCurrency(final String currency) {
-    this.currency = currency;
-  }
+  public abstract String currency();
 
-  public double getLast() {
-    return last;
-  }
+  public abstract double last();
 
-  public void setLast(final double last) {
-    this.last = last;
-  }
+  public abstract double bid();
 
-  public double getBid() {
-    return bid;
-  }
+  public abstract double ask();
 
-  public void setBid(final double bid) {
-    this.bid = bid;
-  }
+  public abstract double high();
 
-  public double getAsk() {
-    return ask;
-  }
+  public abstract double low();
 
-  public void setAsk(final double ask) {
-    this.ask = ask;
-  }
+  public abstract long timestamp();
 
-  public double getHigh() {
-    return high;
-  }
+  public abstract double volume1d();
 
-  public void setHigh(final double high) {
-    this.high = high;
-  }
+  public abstract double volume30d();
 
-  public double getLow() {
-    return low;
-  }
+  @AutoValue.Builder
+  public static abstract class Builder {
+    public abstract Builder currency(String value);
 
-  public void setLow(final double low) {
-    this.low = low;
-  }
+    public abstract Builder last(double value);
 
-  public long getTimestamp() {
-    return timestamp;
-  }
+    public abstract Builder bid(double value);
 
-  public void setTimestamp(final long timestamp) {
-    this.timestamp = timestamp;
-  }
+    public abstract Builder ask(double value);
 
-  public double getVolume1d() {
-    return volume1d;
-  }
+    public abstract Builder high(double value);
 
-  public void setVolume1d(final double volume1d) {
-    this.volume1d = volume1d;
-  }
+    public abstract Builder low(double value);
 
-  public double getVolume30d() {
-    return volume30d;
-  }
+    public abstract Builder timestamp(long value);
 
-  public void setVolume30d(final double volume30d) {
-    this.volume30d = volume30d;
-  }
+    public abstract Builder volume1d(double value);
 
-  @Override
-  public String toString() {
-    return "TickerInfo [currency=" + currency + ", last=" + last + ", bid=" + bid + ", ask=" + ask + ", high=" + high + ", low=" + low
-        + ", timestamp=" + timestamp + ", volume1d=" + volume1d + ", volume30d=" + volume30d + "]";
+    public abstract Builder volume30d(double value);
+
+    public abstract TickerInfo build();
   }
 }

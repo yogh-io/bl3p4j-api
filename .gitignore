@@ -30,6 +30,7 @@ Thumbs.db
 *.bat
 *.sh
 *.rb
+.factorypath
 
 # Eclipse files      #
 ######################

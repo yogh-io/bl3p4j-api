@@ -1,45 +1,32 @@
 package io.yogh.bl3p.api.v1.response.domain;
 
-public class TradeInfo {
-  private int tradeId;
-  private long date;
-  private int amount;
-  private int price;
+import com.google.auto.value.AutoValue;
 
-  public int getTradeId() {
-    return tradeId;
+@AutoValue
+public abstract class TradeInfo {
+  public static Builder builder() {
+    return new AutoValue_TradeInfo.Builder();
   }
 
-  public void setTradeId(final int tradeId) {
-    this.tradeId = tradeId;
-  }
+  public abstract int tradeId();
 
-  public long getDate() {
-    return date;
-  }
+  public abstract long date();
 
-  public void setDate(final long date) {
-    this.date = date;
-  }
+  public abstract int amount();
 
-  public int getAmount() {
-    return amount;
-  }
+  public abstract int price();
 
-  public void setAmount(final int amount) {
-    this.amount = amount;
-  }
+  @AutoValue.Builder
+  public static abstract class Builder {
+    public abstract Builder tradeId(int value);
 
-  public int getPrice() {
-    return price;
-  }
+    public abstract Builder date(long value);
 
-  public void setPrice(final int price) {
-    this.price = price;
-  }
+    public abstract Builder amount(int value);
 
-  @Override
-  public String toString() {
-    return "TradeInfo [tradeId=" + tradeId + ", date=" + date + ", amount=" + amount + ", price=" + price + "]";
+    public abstract Builder price(int value);
+
+    public abstract TradeInfo build();
+
   }
 }

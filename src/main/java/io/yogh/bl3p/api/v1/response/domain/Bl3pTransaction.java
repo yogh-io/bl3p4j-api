@@ -1,132 +1,96 @@
 package io.yogh.bl3p.api.v1.response.domain;
 
-public class Bl3pTransaction {
-  private int transactionId;
-  private Amount amount;
-  private int timestamp;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-  // Type of booking. (Can be: 'debit' or 'credit')
-  private String debitCredit;
+import com.google.auto.value.AutoValue;
 
-  // The field described above is for type 'trade' only and will be omitted if
-  // recs_per_page > 1000
-  private Amount price;
-
-  // The field described above is for type 'trade' only and will be omitted if
-  // recs_per_page > 1000
-  private int orderId;
-
-  // Type of transaction (Can be: 'trade’, ‘fee’, ‘deposit’, ‘withdraw’)
-  private String type;
-
-  // Balance of the user his account (for the regarding currency) after the
-  // transaction.
-  private Amount balance;
-
-  // The field described above is for type 'trade' only and will be omitted if
-  // recs_per_page > 1000
-  private int tradeId;
-
-  // The field described above is for type 'trade' only and will be omitted if
-  // recs_per_page > 1000
-  private Amount contraAmount;
-
-  // The field described above is for type 'trade' only and will be omitted if
-  // recs_per_page > 1000
-  private Amount fee;
-
-  public int getTransactionId() {
-    return transactionId;
+@AutoValue
+public abstract class Bl3pTransaction {
+  public static Builder builder() {
+    return new AutoValue_Bl3pTransaction.Builder();
   }
 
-  public void setTransactionId(final int transactionId) {
-    this.transactionId = transactionId;
-  }
+  public abstract int transactionId();
 
-  public Amount getAmount() {
-    return amount;
-  }
+  public abstract Amount amount();
 
-  public void setAmount(final Amount amount) {
-    this.amount = amount;
-  }
+  public abstract int timestamp();
 
-  public int getTimestamp() {
-    return timestamp;
-  }
+  /**
+   * Type of booking. (Can be: 'debit' or 'credit')
+   */
+  public abstract String debitCredit();
 
-  public void setTimestamp(final int timestamp) {
-    this.timestamp = timestamp;
-  }
+  /**
+   * The field described above is for type 'trade' only and will be omitted if
+   * recs_per_page > 1000
+   */
+  @Nullable
+  public abstract Amount price();
 
-  public String getDebitCredit() {
-    return debitCredit;
-  }
+  /**
+   * The field described above is for type 'trade' only and will be omitted if
+   * recs_per_page > 1000
+   */
+  @Nullable
+  public abstract Integer orderId();
 
-  public void setDebitCredit(final String debitCredit) {
-    this.debitCredit = debitCredit;
-  }
+  /**
+   * Type of transaction (Can be: 'trade’, ‘fee’, ‘deposit’, ‘withdraw’)
+   */
+  public abstract String type();
 
-  public Amount getPrice() {
-    return price;
-  }
+  /**
+   * Balance of the user his account (for the regarding currency) after the
+   * transaction.
+   */
+  public abstract Amount balance();
 
-  public void setPrice(final Amount price) {
-    this.price = price;
-  }
+  /**
+   * The field described above is for type 'trade' only and will be omitted if
+   * recs_per_page > 1000
+   */
+  @Nullable
+  public abstract Integer tradeId();
 
-  public int getOrderId() {
-    return orderId;
-  }
+  /**
+   * The field described above is for type 'trade' only and will be omitted if
+   * recs_per_page > 1000
+   */
+  @Nullable
+  public abstract Amount contraAmount();
 
-  public void setOrderId(final int orderId) {
-    this.orderId = orderId;
-  }
+  /**
+   * The field described above is for type 'trade' only and will be omitted if
+   * recs_per_page > 1000
+   */
+  @Nullable
+  public abstract Amount fee();
 
-  public String getType() {
-    return type;
-  }
+  @AutoValue.Builder
+  public static abstract class Builder {
+    public abstract Builder transactionId(int value);
 
-  public void setType(final String type) {
-    this.type = type;
-  }
+    public abstract Builder amount(Amount value);
 
-  public Amount getBalance() {
-    return balance;
-  }
+    public abstract Builder timestamp(int value);
 
-  public void setBalance(final Amount balance) {
-    this.balance = balance;
-  }
+    public abstract Builder debitCredit(String value);
 
-  public int getTradeId() {
-    return tradeId;
-  }
+    public abstract Builder price(Amount value);
 
-  public void setTradeId(final int tradeId) {
-    this.tradeId = tradeId;
-  }
+    public abstract Builder orderId(Integer value);
 
-  public Amount getContraAmount() {
-    return contraAmount;
-  }
+    public abstract Builder type(String value);
 
-  public void setContraAmount(final Amount contraAmount) {
-    this.contraAmount = contraAmount;
-  }
+    public abstract Builder balance(Amount value);
 
-  public Amount getFee() {
-    return fee;
-  }
+    public abstract Builder tradeId(Integer value);
 
-  public void setFee(final Amount fee) {
-    this.fee = fee;
-  }
+    public abstract Builder contraAmount(Amount value);
 
-  @Override
-  public String toString() {
-    return "Bl3pTransaction [transactionId=" + transactionId + ", amount=" + amount + ", timestamp=" + timestamp + ", debitCredit=" + debitCredit
-        + ", price=" + price + ", orderId=" + orderId + ", type=" + type + ", balance=" + balance + ", tradeId=" + tradeId + ", contraAmount="
-        + contraAmount + ", fee=" + fee + "]";
+    public abstract Builder fee(Amount value);
+
+    public abstract Bl3pTransaction build();
   }
 }
