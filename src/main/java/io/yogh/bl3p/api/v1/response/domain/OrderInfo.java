@@ -1,133 +1,86 @@
 package io.yogh.bl3p.api.v1.response.domain;
 
-public class OrderInfo {
-  private int orderId;
-  private String label;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
+import com.google.auto.value.AutoValue;
+
+@AutoValue
+public abstract class OrderInfo {
+  public static Builder builder() {
+    return new AutoValue_OrderInfo.Builder();
+  }
+
+  public abstract int orderId();
+
+  public abstract String label();
 
   // Currency of the order. (Is now by default 'EUR')
-  private String currency;
+  public abstract String currency();
 
-  // The item that will be traded for `currency`. (Can be: 'BTC')
-  private String item;
+  /**
+   * The item that will be traded for `currency`. (Can be: 'BTC')
+   */
+  public abstract String item();
 
-  // Status of the order. (Can be: 'pending’, ‘open’, ‘closed’, ‘cancelled’,
-  // ’placed’)
-  private String status;
+  /**
+   * Status of the order. (Can be: 'pending’, ‘open’, ‘closed’, ‘cancelled’,
+   * ’placed’)
+   */
+  public abstract String status();
 
-  private long date;
-  private long dateClosed;
+  public abstract Long date();
 
-  // Amount in funds that is executed.
-  private Amount amount;
+  @Nullable
+  public abstract Long dateClosed();
 
-  private Amount amountFunds;
+  /**
+   * Amount in funds that is executed.
+   */
+  @Nullable
+  public abstract Amount amount();
 
-  private Amount amountFundsExecuted;
+  @Nullable
+  public abstract Amount amountFunds();
 
-  // Amount that is executed.
-  private Amount amountExecuted;
+  public abstract Amount amountFundsExecuted();
 
-  // Order limit price. (optional)
-  private Amount price;
+  /**
+   * Amount that is executed.
+   */
+  public abstract Amount amountExecuted();
 
-  public int getOrderId() {
-    return orderId;
-  }
+  /**
+   * Order limit price. (optional)
+   */
+  @Nullable
+  public abstract Amount price();
 
-  public void setOrderId(final int orderId) {
-    this.orderId = orderId;
-  }
+  @AutoValue.Builder
+  public abstract static class Builder {
+    public abstract Builder orderId(int value);
 
-  public String getLabel() {
-    return label;
-  }
+    public abstract Builder label(String value);
 
-  public void setLabel(final String label) {
-    this.label = label;
-  }
+    public abstract Builder currency(String value);
 
-  public String getCurrency() {
-    return currency;
-  }
+    public abstract Builder item(String value);
 
-  public void setCurrency(final String currency) {
-    this.currency = currency;
-  }
+    public abstract Builder status(String value);
 
-  public String getItem() {
-    return item;
-  }
+    public abstract Builder date(Long value);
 
-  public void setItem(final String item) {
-    this.item = item;
-  }
+    public abstract Builder dateClosed(Long value);
 
-  public String getStatus() {
-    return status;
-  }
+    public abstract Builder amount(Amount value);
 
-  public void setStatus(final String status) {
-    this.status = status;
-  }
+    public abstract Builder amountFunds(Amount value);
 
-  public long getDate() {
-    return date;
-  }
+    public abstract Builder amountFundsExecuted(Amount value);
 
-  public void setDate(final long date) {
-    this.date = date;
-  }
+    public abstract Builder amountExecuted(Amount value);
 
-  public long getDateClosed() {
-    return dateClosed;
-  }
+    public abstract Builder price(Amount value);
 
-  public void setDateClosed(final long dateClosed) {
-    this.dateClosed = dateClosed;
-  }
-
-  public Amount getAmount() {
-    return amount;
-  }
-
-  public void setAmount(final Amount amount) {
-    this.amount = amount;
-  }
-
-  public Amount getAmountExecuted() {
-    return amountExecuted;
-  }
-
-  public void setAmountExecuted(final Amount amountExecuted) {
-    this.amountExecuted = amountExecuted;
-  }
-
-  public Amount getPrice() {
-    return price;
-  }
-
-  public void setPrice(final Amount price) {
-    this.price = price;
-  }
-
-  public Amount getAmountFundsExecuted() {
-    return amountFundsExecuted;
-  }
-
-  public void setAmountFundsExecuted(final Amount amountFundsExecuted) {
-    this.amountFundsExecuted = amountFundsExecuted;
-  }
-
-  public Amount getAmountFunds() {
-    return amountFunds;
-  }
-
-  public void setAmountFunds(final Amount amountFunds) {
-    this.amountFunds = amountFunds;
-  }
-
-  @Override
-  public String toString() {
-    return "OrderInfo [orderId=" + orderId + ", label=" + label + ", currency=" + currency + ", status=" + status + ", price=" + price + "]";
+    public abstract OrderInfo build();
   }
 }

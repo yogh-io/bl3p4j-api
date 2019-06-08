@@ -10,23 +10,19 @@ public class TickerResponseParser extends ResultParser implements Parser<TickerI
   @Override
   public TickerInfo parse(final JsonNode t) {
     final JSONObject data = t.getObject();
-
-    final TickerInfo ticker = new TickerInfo();
-
-    ticker.setCurrency(data.getString("currency"));
-    ticker.setLast(data.getDouble("last"));
-    ticker.setBid(data.getDouble("bid"));
-    ticker.setAsk(data.getDouble("ask"));
-    ticker.setHigh(data.getDouble("high"));
-    ticker.setLow(data.getDouble("low"));
-    ticker.setTimestamp(data.getLong("timestamp"));
-
     final JSONObject volume = data.getJSONObject("volume");
 
-    ticker.setVolume1d(volume.getDouble("24h"));
-    ticker.setVolume30d(volume.getDouble("30d"));
-
-    return ticker;
+    return TickerInfo.builder()
+        .currency(data.getString("currency"))
+        .last(data.getDouble("last"))
+        .bid(data.getDouble("bid"))
+        .ask(data.getDouble("ask"))
+        .high(data.getDouble("high"))
+        .low(data.getDouble("low"))
+        .timestamp(data.getLong("timestamp"))
+        .volume1d(volume.getDouble("24h"))
+        .volume30d(volume.getDouble("30d"))
+        .build();
   }
 
   public static TickerResponseParser create() {

@@ -4,11 +4,16 @@ import org.json.JSONObject;
 
 import io.yogh.bl3p.api.v1.response.domain.Amount;
 import io.yogh.bl3p.api.v1.response.domain.OrderInfo;
+import io.yogh.bl3p.api.v1.response.domain.OrderInfo.Builder;
 import io.yogh.bl3p.api.v1.response.domain.PagedResponse;
 import io.yogh.bl3p.api.v1.response.domain.SimpleOrder;
 
 public final class CommonParser {
   private CommonParser() {}
+
+  public static Amount parseAmount(final JSONObject obj, final String key) {
+    return parseAmount(obj.getJSONObject(key));
+  }
 
   public static Amount parseAmount(final JSONObject obj) {
     final Amount amount = new Amount();
@@ -31,36 +36,32 @@ public final class CommonParser {
   }
 
   public static OrderInfo parseOrder(final JSONObject orderJson) {
-    final OrderInfo order = new OrderInfo();
-
-    order.setOrderId(orderJson.getInt("order_id"));
-    order.setLabel(orderJson.getString("label"));
-
-    order.setCurrency(orderJson.getString("currency"));
-    order.setStatus(orderJson.getString("status"));
-
-    order.setDate(orderJson.getLong("date"));
+    final Builder bldr = OrderInfo.builder()
+        .orderId(orderJson.getInt("order_id"))
+        .label(orderJson.getString("label"))
+        .currency(orderJson.getString("currency"))
+        .status(orderJson.getString("status"))
+        .date(orderJson.getLong("date"))
+        .amountFundsExecuted(parseAmount(orderJson, "amount_funds_executed"))
+        .amountExecuted(parseAmount(orderJson, "amount_executed"));
 
     if (orderJson.has("date_closed")) {
-      order.setDateClosed(orderJson.getLong("date_closed"));
+      bldr.dateClosed(orderJson.getLong("date_closed"));
     }
 
     if (orderJson.has("price")) {
-      order.setPrice(CommonParser.parseAmount(orderJson.getJSONObject("price")));
+      bldr.price(parseAmount(orderJson, "price"));
     }
 
     if (orderJson.has("amount")) {
-      order.setAmount(CommonParser.parseAmount(orderJson.getJSONObject("amount")));
+      bldr.amount(parseAmount(orderJson, "amount"));
     }
 
     if (orderJson.has("amount_funds")) {
-      order.setAmountFunds(CommonParser.parseAmount(orderJson.getJSONObject("amount_funds")));
+      bldr.amountFunds(parseAmount(orderJson, "amount_funds"));
     }
 
-    order.setAmountFundsExecuted(CommonParser.parseAmount(orderJson.getJSONObject("amount_funds_executed")));
-    order.setAmountExecuted(CommonParser.parseAmount(orderJson.getJSONObject("amount_executed")));
-
-    return order;
+    return bldr.build();
   }
 
   public static SimpleOrder parseSimpleOrder(final JSONObject orderJson) {

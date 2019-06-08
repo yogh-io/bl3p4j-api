@@ -20,14 +20,13 @@ public class RetrieveAllTradesResponseParser extends ResultParser implements Par
     final List<TradeInfo> trades = new ArrayList<>();
     for (int i = 0; i < tradesJson.length(); i++) {
       final JSONObject tradeJson = tradesJson.getJSONObject(i);
-      final TradeInfo trade = new TradeInfo();
 
-      trade.setTradeId(tradeJson.getInt("trade_id"));
-      trade.setDate(tradeJson.getLong("date"));
-      trade.setPrice(tradeJson.getInt("price_int"));
-      trade.setAmount(tradeJson.getInt("amount_int"));
-
-      trades.add(trade);
+      trades.add(TradeInfo.builder()
+          .tradeId(tradeJson.getInt("trade_id"))
+          .date(tradeJson.getLong("date"))
+          .price(tradeJson.getInt("price_int"))
+          .amount(tradeJson.getInt("amount_int"))
+          .build());
     }
 
     return trades;
